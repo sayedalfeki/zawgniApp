@@ -47,7 +47,7 @@ const upload=multer({storage:storage,filefilter:filter})
 mongose.set('useCreateIndex', true);
 mongose.connect('mongodb://localhost:27017/data',{useNewUrlParser:true,useUnifiedTopology:true},(err)=>{
 if(err!=null)console.log('error in connection')
-else console.log('connected')
+else console.log('connected to database')
 },)
 app.use(bodyparser.json({extended:true}))
 app.use(bodyparser.urlencoded({extended:true}))
