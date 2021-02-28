@@ -1,0 +1,43 @@
+const ordermodel=require('../models/order.model')
+exports.addOrder=(req,res)=>{
+const order=new ordermodel(
+    {
+        product:req.body.product,
+        buyer:req.body.buyer,
+        quantity:parseInt(req.body.quantity),
+        orderstatus:req.body.orderstatus
+    }
+)
+order.save().then(or=>{
+    res.json({'added':true,or})
+}).catch(err=>res.json(err))
+}
+exports.updateStatus=(req,res)=>{
+ordermodel.updateOne({_id:req.params.id},{$set:{orderstatus:req.body.orderstatus}}).then(up=>{
+    if(up.nModified>0)
+    res.json({'updated':true})
+    else
+    res.json({'updated':false})
+}).catch(err=>{res.json(err)})
+}
+exports.updateQuantity=(req,res)=>{
+    ordermodel.updateOne({_id:req.params.id},{$set:{quantity:req.body.quantity}}).then(up=>{
+        if(up.nModified>0)
+        res.json({'updated':true})
+        else
+        res.json({'updated':false})
+    }).catch(err=>{res.json(err)})
+    }
+    exports.deleteOrder=()=>{
+        ordermodel.deleteOne({_id:req.params.id}).then(del=>{
+            if(del.deletedCount>0)
+            res.json({'deleted':true})
+            else
+            res.json({'deleted':false})
+        }).catch(err=>{res.json(err)})
+    }
+    exports.getallbuyerorder=(req,res)=>{
+ordermodel.find({buyer:req.params.buyer}).then(order=>{
+    res.json(order)
+}).catch(err=>{res.json(err)})
+    }
